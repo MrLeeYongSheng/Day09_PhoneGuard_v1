@@ -13,7 +13,7 @@ public class StreamUtil {
 		while ((len = is.read(buf)) > 0) {
 			baos.write(buf, 0, len);
 		}
-		return baos.toString("UTF-8");
+		return baos.toString("GBK");
 	}
 
 }
