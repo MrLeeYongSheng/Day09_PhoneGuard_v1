@@ -1,23 +1,24 @@
 package com.itheima.day09_phoneguard_v1;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 
-import com.lidroid.xutils.HttpUtils;
-import com.lidroid.xutils.exception.HttpException;
-import com.lidroid.xutils.http.ResponseInfo;
-import com.lidroid.xutils.http.callback.RequestCallBack;
+import org.json.JSONException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -33,14 +34,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+
 public class SplashActivity extends Activity {
 
 	private static final int VERSON_OK = 0;
 	private static final int VERSON_LOW = 1;
+	protected static final int ERROR = 2;
 	private RelativeLayout rl_root;
 	private TextView tv_version;
 	private int versionCode;
 	private UrlBean bean;
+	private long startTimeMillis;
+	private long endTimeMillis;
+	private String versionName;
+	private String fileName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +59,8 @@ public class SplashActivity extends Activity {
 		initView();
 		initData();
 		animation();
-		startThreadTimeMillis = SystemClock.currentThreadTimeMillis();
+//		startTimeMillis = System.currentTimeMillis();
+		startTimeMillis = SystemClock.currentThreadTimeMillis();
 		connection();
 
 	}
@@ -60,47 +72,83 @@ public class SplashActivity extends Activity {
 			packageInfo = packageManager.getPackageInfo(getPackageName(), 0);
 			versionCode = packageInfo.versionCode;
 			versionName = packageInfo.versionName;
-			if(TextUtils.isEmpty(versionName)) {
+			if (TextUtils.isEmpty(versionName)) {
 				tv_version.setText("通用");
 			} else {
 				tv_version.setText(versionName);
 			}
 		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	private void connection() {
 
-		new Thread(){
-
+		new Thread() {
 
 			public void run() {
 				String path = "http://10.0.2.2:8080/splash.json";
+				HttpURLConnection conn = null;
+				InputStream is = null;
+				int errorCode = -1;//-1表示正常
 				try {
 					URL url = new URL(path);
-					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+					conn = (HttpURLConnection) url
+							.openConnection();
 					conn.setRequestMethod("GET");
 					conn.setReadTimeout(5000);
 					conn.setConnectTimeout(5000);
 					int responseCode = conn.getResponseCode();
-					if(responseCode == 200) {
-						InputStream is = conn.getInputStream();
+					if (responseCode == 200) {
+						is = conn.getInputStream();
 						String result = StreamUtil.parser(is);
 						bean = JsonParser2UrlBean.parser(result);
-						isNewVerson(bean);
+					} else {
+						//404 找不到地址/资源
+						System.out.println(404);
+						errorCode = 404;
 					}
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
+				} catch (IOException e) {
+					// 4001 连接网络失败
+					errorCode = 4001;
+					System.out.println(4001);
 					e.printStackTrace();
+				} catch (JSONException e) {
+					//4002 json格式解析错误
+					errorCode = 4002;
+					System.out.println(4002);
+					e.printStackTrace();
+				} finally {
+					if(is != null) {
+						try {
+							is.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					if(conn != null) {
+						conn.disconnect();
+					}
+					Message msg = Message.obtain();
+					if(errorCode == -1) {
+						msg.what = isNewVerson(bean);
+					} else {
+						msg.what = ERROR;
+						msg.arg1 = errorCode;
+					}
+					
+					endTimeMillis = SystemClock.currentThreadTimeMillis();
+					if(endTimeMillis - startTimeMillis < 3000L) {
+						SystemClock.sleep(3000L - (endTimeMillis - startTimeMillis));
+					}
+					mHandler.sendMessage(msg);
 				}
 			}
 
 		}.start();
 	}
-	
-	private Handler mHandler = new Handler(){
+
+	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case VERSON_OK:
@@ -109,80 +157,142 @@ public class SplashActivity extends Activity {
 			case VERSON_LOW:
 				showAlertDiaload();
 				break;
+			case ERROR:
+				switch (msg.arg1) {
+				case 404://资源找不到
+					Toast.makeText(SplashActivity.this, "404 目标资源找不到", Toast.LENGTH_SHORT).show();
+					break;
+				case 4001://网络连接错误
+					Toast.makeText(SplashActivity.this, "4001 网络连接错误", Toast.LENGTH_SHORT).show();
+					break;
+				case 4002://4002 json格式解析错误
+					Toast.makeText(SplashActivity.this, "4002 json格式解析错误", Toast.LENGTH_SHORT).show();
+					break;
+				default:
+					break;
+				}
+				gotoMain();
+				break;
+				
 			default:
 				break;
 			}
 		};
 	};
-	private long startThreadTimeMillis;
-	private long endThreadTimeMillis;
-	private String versionName;
-	/**
-	 *  运行在子线程里
-	 */
-	private void isNewVerson(UrlBean bean) {
 
-		if(bean.getVerson() > versionCode) {
-			Message msg = Message.obtain();
-			msg.what = VERSON_LOW;
-			mHandler.sendMessage(msg);
+	/**
+	 * 运行在子线程里
+	 * 
+	 * @param bean
+	 */
+	private int isNewVerson(UrlBean bean) {
+
+		if (bean.getVerson() > versionCode) {
+			return VERSON_LOW;
 		} else {
-			endThreadTimeMillis = SystemClock.currentThreadTimeMillis();
-			if (startThreadTimeMillis-endThreadTimeMillis < 5000l) {
-				SystemClock.sleep(3000l - (startThreadTimeMillis-endThreadTimeMillis));
-			}
-			Message msg = Message.obtain();
-			msg.what = VERSON_OK;
-			mHandler.sendMessage(msg);
+			return VERSON_OK;
 		}
 
 	}
-	
+
 	protected void showAlertDiaload() {
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
+		AlertDialog.Builder builder = new AlertDialog.Builder(
+				SplashActivity.this);
 		builder.setTitle("更新最新版本")
-		.setMessage("版本特性 : " + bean.getDesc())
-		.setPositiveButton("更新", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				Toast.makeText(SplashActivity.this, "准备下载", Toast.LENGTH_SHORT).show();
-				downloadNewApk();
-			}
-		}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				gotoMain();
-			}
-		}).show();
+				.setMessage("版本特性 : " + bean.getDesc())
+				.setOnCancelListener(new OnCancelListener() {
+					
+					@Override
+					public void onCancel(DialogInterface dialog) {
+						gotoMain();
+					}
+				})
+				.setPositiveButton("更新", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Toast.makeText(SplashActivity.this, "准备下载",
+								Toast.LENGTH_SHORT).show();
+						downloadNewApk();
+					}
+				})
+				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						gotoMain();
+					}
+				}).show();
 	}
 
 	protected void downloadNewApk() {
-		
+
 		HttpUtils httpUtils = new HttpUtils();
 		System.out.println(bean.getUrl());
-		httpUtils.download(bean.getUrl(), Environment.getExternalStorageDirectory().getAbsolutePath()+"/2.apk", new RequestCallBack<File>() {
-			
-			@Override
-			public void onSuccess(ResponseInfo<File> arg0) {
-				// TODO Auto-generated method stub
-				Toast.makeText(SplashActivity.this, "下载成功", Toast.LENGTH_SHORT).show();
-			}
-			
-			@Override
-			public void onFailure(HttpException arg0, String arg1) {
-				Toast.makeText(SplashActivity.this, "下载失败", Toast.LENGTH_SHORT).show();
-				
-			}
-		});
+		fileName = getFileName(bean.getUrl());
+		httpUtils.download(bean.getUrl(), Environment
+				.getExternalStorageDirectory().getAbsolutePath() + "/"+fileName,
+				new RequestCallBack<File>() {
+
+					@Override
+					public void onSuccess(ResponseInfo<File> arg0) {
+						// TODO Auto-generated method stub
+						Toast.makeText(SplashActivity.this, "下载成功",
+								Toast.LENGTH_SHORT).show();
+						installAPK();
+					}
+
+					@Override
+					public void onFailure(HttpException arg0, String arg1) {
+						Toast.makeText(SplashActivity.this, "下载失败",
+								Toast.LENGTH_SHORT).show();
+
+					}
+				});
+	}
+
+	private String getFileName(String url) {
+		if(url!=null)
+		{
+			return url.substring(url.lastIndexOf("/")+1);
+		}
+		return null;
+	}
+
+	/**
+	 * 安装APK
+	 */
+	protected void installAPK() {
+		/*
+		 * <intent-filter> <action android:name="android.intent.action.VIEW" />
+		 * <category android:name="android.intent.category.DEFAULT" /> <data
+		 * android:scheme="content" /> <data android:scheme="file" /> <data
+		 * android:mimeType="application/vnd.android.package-archive" />
+		 * </intent-filter>
+		 */
+		Intent intent = new Intent();
+		intent.setAction("android.intent.action.VIEW");
+		intent.addCategory("android.intent.category.DEFAULT");
+		Uri data = Uri.fromFile(new File(Environment
+				.getExternalStorageDirectory().getAbsolutePath(), fileName));
+		String type = "application/vnd.android.package-archive";
+		intent.setDataAndType(data, type);
+		startActivityForResult(intent, 0);
+
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		gotoMain();
 	}
 
 	protected void gotoMain() {
 
 		Intent intent = new Intent(SplashActivity.this, MainActivity.class);
 		startActivity(intent);
+		finish();
 	}
 
 	private void animation() {
@@ -201,12 +311,12 @@ public class SplashActivity extends Activity {
 				0.5f);
 		sa.setDuration(3000);
 		sa.setFillAfter(true);
-		
+
 		AnimationSet as = new AnimationSet(true);
 		as.addAnimation(aa);
 		as.addAnimation(ra);
 		as.addAnimation(sa);
-		
+
 		rl_root.setAnimation(as);
 	}
 
