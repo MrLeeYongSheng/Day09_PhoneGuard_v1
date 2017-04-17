@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
 import org.json.JSONException;
@@ -30,10 +28,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.itheima.day09_phoneguard_v1.domain.UrlBean;
+import com.itheima.day09_phoneguard_v1.utils.JsonParser2UrlBeanUtils;
+import com.itheima.day09_phoneguard_v1.utils.StreamUtil;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
@@ -52,6 +54,7 @@ public class SplashActivity extends Activity {
 	private long endTimeMillis;
 	private String versionName;
 	private String fileName;
+	private ProgressBar pb_downloading;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +62,7 @@ public class SplashActivity extends Activity {
 		initView();
 		initData();
 		animation();
-//		startTimeMillis = System.currentTimeMillis();
+		// startTimeMillis = System.currentTimeMillis();
 		startTimeMillis = SystemClock.currentThreadTimeMillis();
 		connection();
 
@@ -90,11 +93,10 @@ public class SplashActivity extends Activity {
 				String path = "http://10.0.2.2:8080/splash.json";
 				HttpURLConnection conn = null;
 				InputStream is = null;
-				int errorCode = -1;//-1表示正常
+				int errorCode = -1;// -1表示正常
 				try {
 					URL url = new URL(path);
-					conn = (HttpURLConnection) url
-							.openConnection();
+					conn = (HttpURLConnection) url.openConnection();
 					conn.setRequestMethod("GET");
 					conn.setReadTimeout(5000);
 					conn.setConnectTimeout(5000);
@@ -102,9 +104,9 @@ public class SplashActivity extends Activity {
 					if (responseCode == 200) {
 						is = conn.getInputStream();
 						String result = StreamUtil.parser(is);
-						bean = JsonParser2UrlBean.parser(result);
+						bean = JsonParser2UrlBeanUtils.parser(result);
 					} else {
-						//404 找不到地址/资源
+						// 404 找不到地址/资源
 						System.out.println(404);
 						errorCode = 404;
 					}
@@ -114,32 +116,33 @@ public class SplashActivity extends Activity {
 					System.out.println(4001);
 					e.printStackTrace();
 				} catch (JSONException e) {
-					//4002 json格式解析错误
+					// 4002 json格式解析错误
 					errorCode = 4002;
 					System.out.println(4002);
 					e.printStackTrace();
 				} finally {
-					if(is != null) {
+					if (is != null) {
 						try {
 							is.close();
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
 					}
-					if(conn != null) {
+					if (conn != null) {
 						conn.disconnect();
 					}
 					Message msg = Message.obtain();
-					if(errorCode == -1) {
+					if (errorCode == -1) {
 						msg.what = isNewVerson(bean);
 					} else {
 						msg.what = ERROR;
 						msg.arg1 = errorCode;
 					}
-					
+
 					endTimeMillis = SystemClock.currentThreadTimeMillis();
-					if(endTimeMillis - startTimeMillis < 3000L) {
-						SystemClock.sleep(3000L - (endTimeMillis - startTimeMillis));
+					if (endTimeMillis - startTimeMillis < 3000L) {
+						SystemClock
+								.sleep(3000L - (endTimeMillis - startTimeMillis));
 					}
 					mHandler.sendMessage(msg);
 				}
@@ -159,21 +162,24 @@ public class SplashActivity extends Activity {
 				break;
 			case ERROR:
 				switch (msg.arg1) {
-				case 404://资源找不到
-					Toast.makeText(SplashActivity.this, "404 目标资源找不到", Toast.LENGTH_SHORT).show();
+				case 404:// 资源找不到
+					Toast.makeText(SplashActivity.this, "404 目标资源找不到",
+							Toast.LENGTH_SHORT).show();
 					break;
-				case 4001://网络连接错误
-					Toast.makeText(SplashActivity.this, "4001 网络连接错误", Toast.LENGTH_SHORT).show();
+				case 4001:// 网络连接错误
+					Toast.makeText(SplashActivity.this, "4001 网络连接错误",
+							Toast.LENGTH_SHORT).show();
 					break;
-				case 4002://4002 json格式解析错误
-					Toast.makeText(SplashActivity.this, "4002 json格式解析错误", Toast.LENGTH_SHORT).show();
+				case 4002:// 4002 json格式解析错误
+					Toast.makeText(SplashActivity.this, "4002 json格式解析错误",
+							Toast.LENGTH_SHORT).show();
 					break;
 				default:
 					break;
 				}
 				gotoMain();
 				break;
-				
+
 			default:
 				break;
 			}
@@ -202,7 +208,7 @@ public class SplashActivity extends Activity {
 		builder.setTitle("更新最新版本")
 				.setMessage("版本特性 : " + bean.getDesc())
 				.setOnCancelListener(new OnCancelListener() {
-					
+
 					@Override
 					public void onCancel(DialogInterface dialog) {
 						gotoMain();
@@ -232,30 +238,39 @@ public class SplashActivity extends Activity {
 		System.out.println(bean.getUrl());
 		fileName = getFileName(bean.getUrl());
 		httpUtils.download(bean.getUrl(), Environment
-				.getExternalStorageDirectory().getAbsolutePath() + "/"+fileName,
-				new RequestCallBack<File>() {
+				.getExternalStorageDirectory().getAbsolutePath()
+				+ "/"
+				+ fileName, new RequestCallBack<File>() {
 
-					@Override
-					public void onSuccess(ResponseInfo<File> arg0) {
-						// TODO Auto-generated method stub
-						Toast.makeText(SplashActivity.this, "下载成功",
-								Toast.LENGTH_SHORT).show();
-						installAPK();
-					}
+			@Override
+			public void onLoading(long total, long current, boolean isUploading) {
+				super.onLoading(total, current, isUploading);
+				pb_downloading.setVisibility(ProgressBar.VISIBLE);
+				pb_downloading.setMax((int) total);
+				pb_downloading.setProgress((int) current);
+			}
 
-					@Override
-					public void onFailure(HttpException arg0, String arg1) {
-						Toast.makeText(SplashActivity.this, "下载失败",
-								Toast.LENGTH_SHORT).show();
+			@Override
+			public void onSuccess(ResponseInfo<File> arg0) {
+				pb_downloading.setVisibility(ProgressBar.GONE);
+				Toast.makeText(SplashActivity.this, "下载成功", Toast.LENGTH_SHORT)
+						.show();
+				installAPK();
+			}
 
-					}
-				});
+			@Override
+			public void onFailure(HttpException arg0, String arg1) {
+				pb_downloading.setVisibility(ProgressBar.GONE);
+				Toast.makeText(SplashActivity.this, "下载失败", Toast.LENGTH_SHORT)
+						.show();
+
+			}
+		});
 	}
 
 	private String getFileName(String url) {
-		if(url!=null)
-		{
-			return url.substring(url.lastIndexOf("/")+1);
+		if (url != null) {
+			return url.substring(url.lastIndexOf("/") + 1);
 		}
 		return null;
 	}
@@ -281,7 +296,7 @@ public class SplashActivity extends Activity {
 		startActivityForResult(intent, 0);
 
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -290,7 +305,7 @@ public class SplashActivity extends Activity {
 
 	protected void gotoMain() {
 
-		Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+		Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
 		startActivity(intent);
 		finish();
 	}
@@ -324,5 +339,6 @@ public class SplashActivity extends Activity {
 		setContentView(R.layout.activity_splash);
 		rl_root = (RelativeLayout) findViewById(R.id.rl_splash_root);
 		tv_version = (TextView) findViewById(R.id.tv_splash_version);
+		pb_downloading = (ProgressBar) findViewById(R.id.pb_splash_donwloading);
 	}
 }

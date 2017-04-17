@@ -1,4 +1,4 @@
-package com.itheima.day09_phoneguard_v1;
+package com.itheima.day09_phoneguard_v1.domain;
 
 public class UrlBean {
 

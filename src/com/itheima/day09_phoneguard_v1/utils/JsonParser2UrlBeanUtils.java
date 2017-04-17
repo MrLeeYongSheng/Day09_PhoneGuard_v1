@@ -1,9 +1,12 @@
-package com.itheima.day09_phoneguard_v1;
+package com.itheima.day09_phoneguard_v1.utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class JsonParser2UrlBean {
+import com.itheima.day09_phoneguard_v1.domain.UrlBean;
+
+
+public class JsonParser2UrlBeanUtils {
 
 	public static UrlBean parser(String result) throws JSONException {
 		JSONObject jObj = new JSONObject(result);

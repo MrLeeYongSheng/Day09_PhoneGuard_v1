@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        style="@style/TextTitle"
+        android:text="主页面" />
+
+    <com.itheima.day09_phoneguard_v1.view.ScrollContainerTextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+		android:singleLine="true"
+        android:ellipsize="marquee"
+        android:text="别说了,没有那个应用比这个好了,这的,如果卸载了只能说你很傻,不懂得珍惜!"/>
+    
+    <GridView 
+        android:id="@+id/gv_home_menu"
+        android:numColumns="3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:listSelector="@drawable/selector_home_gd">
+        
+    </GridView>
+</LinearLayout>
