@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        style="@style/TextTitle"
+        android:text="2.手机卡绑定" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="通过绑定SIM卡:\n下次重启手机如果发现SIM卡不一致,就发送报警短信"
+        android:textColor="#000000" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_home_gd_safe_dialog" >
+
+        <TextView
+            android:id="@+id/tv_btn_setup2_bindSIM"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="点击绑定/解绑SIM卡"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/iv_setup2_lockSIM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/unlock" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal" >
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@android:drawable/presence_invisible" />
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@android:drawable/presence_online" />
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@android:drawable/presence_invisible" />
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@android:drawable/presence_invisible" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/bind" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/selector_home_gd_safe_dialog"
+            android:onClick="preview"
+            android:text="上一步" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/selector_home_gd_safe_dialog"
+            android:onClick="next"
+            android:text="下一步" />
+    </RelativeLayout>
+
+</LinearLayout>

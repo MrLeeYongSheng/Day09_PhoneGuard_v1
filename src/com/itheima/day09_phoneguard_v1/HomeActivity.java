@@ -1,10 +1,12 @@
 package com.itheima.day09_phoneguard_v1;
 
+import com.itheima.day09_phoneguard_v1.utils.MD5Utils;
 import com.itheima.day09_phoneguard_v1.utils.MyConstants;
 import com.itheima.day09_phoneguard_v1.utils.SharedPreferencesUtils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -28,11 +30,9 @@ public class HomeActivity extends Activity {
 	private int[] icons = {R.drawable.safe,R.drawable.callmsgsafe,R.drawable.selector_home_gd_app
 			,R.drawable.taskmanager,R.drawable.netmanager,R.drawable.trojan
 			,R.drawable.sysoptimize,R.drawable.atools,R.drawable.settings};
-	private EditText et_dialog_safe_passwordone;
-	private EditText et_dialog_safe_passwordtwo;
+
 	private AlertDialog passwordDialog;
-	private Button btn_dialog_safe_setpass;
-	private Button btn_dialog_safe_cancle;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,7 +53,12 @@ public class HomeActivity extends Activity {
 
 				switch (position) {
 				case 0:
-					showSetPasswordDialog();
+					if(TextUtils.isEmpty(SharedPreferencesUtils.getString(HomeActivity.this, 
+							MyConstants.SP_SAFE_PASSWORD_NAME, MyConstants.SP_SAFE_PASSWORD_KEY, ""))) {
+						showSetPasswordDialog();
+					} else {
+						showEnterPasswordDialog();
+					}
 					break;
 
 				default:
@@ -63,15 +68,56 @@ public class HomeActivity extends Activity {
 		});
 	}
 
+	protected void showEnterPasswordDialog() {
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+		View view = View.inflate(HomeActivity.this, R.layout.dialog_home_gd_safe_enter_password, null);
+		passwordDialog = builder.setView(view ).show();
+		final EditText et_dialog_safe_enter_password = (EditText) view.findViewById(R.id.et_dialog_home_gd_safe_enter_password);
+
+		Button btn_dialog_safe_enter_password = (Button) view.findViewById(R.id.btn_dialog_home_gd_safe_enter_password);
+		Button btn_dialog_safe_enter_cancle = (Button) view.findViewById(R.id.btn_dialog_home_gd_safe_enter_cancel);
+		
+		btn_dialog_safe_enter_password.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String password = et_dialog_safe_enter_password.getText().toString().trim();
+				if(TextUtils.isEmpty(password)) {
+					Toast.makeText(HomeActivity.this, "密码的输入不能为空", Toast.LENGTH_SHORT).show();
+				} else {
+					//MD5两次加密
+					password= MD5Utils.md5(MD5Utils.md5(password));
+					String passwordBefore = SharedPreferencesUtils.getString(HomeActivity.this, MyConstants.SP_SAFE_PASSWORD_NAME, MyConstants.SP_SAFE_PASSWORD_KEY, "");
+					if(password.equals(passwordBefore)) {
+						passwordDialog.dismiss();
+						Intent intent = new Intent(HomeActivity.this, LostFindActivity.class);
+						startActivity(intent);
+					} else {
+						Toast.makeText(HomeActivity.this, "密码的输入错误", Toast.LENGTH_SHORT).show();
+					}
+				}
+			}
+		});
+		btn_dialog_safe_enter_cancle.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				passwordDialog.dismiss();
+			}
+		});
+		
+	}
+
 	protected void showSetPasswordDialog() {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
 		View view = View.inflate(HomeActivity.this, R.layout.dialog_home_gd_safe_password, null);
 		passwordDialog = builder.setView(view ).show();
-		et_dialog_safe_passwordone = (EditText) view.findViewById(R.id.et_dialog_home_gd_safe_passwordone);
-		et_dialog_safe_passwordtwo = (EditText) view.findViewById(R.id.et_dialog_home_gd_safe_passwordtwo);
-		btn_dialog_safe_setpass = (Button) view.findViewById(R.id.btn_dialog_home_gd_safe_setpass);
-		btn_dialog_safe_cancle = (Button) view.findViewById(R.id.btn_dialog_home_gd_safe_cancel);
+		final EditText et_dialog_safe_passwordone = (EditText) view.findViewById(R.id.et_dialog_home_gd_safe_passwordone);
+		final EditText et_dialog_safe_passwordtwo = (EditText) view.findViewById(R.id.et_dialog_home_gd_safe_passwordtwo);
+		Button btn_dialog_safe_setpass = (Button) view.findViewById(R.id.btn_dialog_home_gd_safe_setpass);
+		Button btn_dialog_safe_cancle = (Button) view.findViewById(R.id.btn_dialog_home_gd_safe_cancel);
 		
 		btn_dialog_safe_setpass.setOnClickListener(new OnClickListener() {
 			
@@ -84,6 +130,8 @@ public class HomeActivity extends Activity {
 				} else if(!passwordone.equals(passwordtwo)){
 					Toast.makeText(HomeActivity.this, "两次密码的输入不一致", Toast.LENGTH_SHORT).show();
 				} else {
+					//MD5两次加密
+					passwordone = MD5Utils.md5(MD5Utils.md5(passwordone));
 					SharedPreferencesUtils.putString(HomeActivity.this, MyConstants.SP_SAFE_PASSWORD_NAME, MyConstants.SP_SAFE_PASSWORD_KEY, passwordone);
 					passwordDialog.dismiss();
 				}
