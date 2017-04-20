@@ -4,5 +4,7 @@
     <string name="app_name">Day09_PhoneGuard_v1</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+	<string name="sample_device_admin_description">设备管理员的描述</string>
+	<string name="sample_device_admin">一键锁屏</string>
+    
 </resources>
