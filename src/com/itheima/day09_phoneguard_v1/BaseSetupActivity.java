@@ -23,8 +23,8 @@ public abstract class BaseSetupActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		initView();
-		initEvent();
 		initData();
+		initEvent();
 		listenGesture();
 	}
 

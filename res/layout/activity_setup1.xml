@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@android:drawable/btn_star_big_on"
         android:gravity="center_vertical"
-        android:text="GPIS追踪:"
+        android:text="GPS追踪:"
         android:textColor="#000000" />
 
     <TextView
@@ -44,6 +44,14 @@
         android:drawableLeft="@android:drawable/btn_star_big_on"
         android:gravity="center_vertical"
         android:text="远程清除数据:"
+        android:textColor="#000000" />
+    
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@android:drawable/btn_star_big_on"
+        android:gravity="center_vertical"
+        android:text="音乐报警:"
         android:textColor="#000000" />
 
     <LinearLayout

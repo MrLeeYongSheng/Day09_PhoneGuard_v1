@@ -15,10 +15,13 @@
         android:textColor="#000000" />
 
     <EditText
+        android:id="@+id/et_setup3_safenumber"
+        android:inputType="phone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
     <Button
+        android:id="@+id/btn_setup3_save_safenumber"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/selector_home_gd_safe_dialog"
