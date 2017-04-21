@@ -61,6 +61,10 @@ public class HomeActivity extends Activity {
 					}
 					break;
 
+				case 8:
+					Intent settingIntent = new Intent(HomeActivity.this, SettingCenterActivity.class);
+					startActivity(settingIntent);
+					break;
 				default:
 					break;
 				}

@@ -1,5 +1,6 @@
 package com.itheima.day09_phoneguard_v1.receiver;
 
+import com.itheima.day09_phoneguard_v1.service.LostFindService;
 import com.itheima.day09_phoneguard_v1.utils.MyConstants;
 import com.itheima.day09_phoneguard_v1.utils.SharedPreferencesUtils;
 
@@ -13,6 +14,12 @@ public class BootReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		
+		//开机启动防盗服务
+		if(SharedPreferencesUtils.getBoolean(context, MyConstants.SP_ISSETUP, false)) {
+			Intent lostFindIntent = new Intent(context, LostFindService.class);
+			context.startService(lostFindIntent);
+		}
 		
 		if(SharedPreferencesUtils.getBoolean(context, MyConstants.SP_ISSETUP, false)) {
 			String oldSimSerialNumber = SharedPreferencesUtils.getString(context, MyConstants.SIM_SERIALNUMBER, "");
