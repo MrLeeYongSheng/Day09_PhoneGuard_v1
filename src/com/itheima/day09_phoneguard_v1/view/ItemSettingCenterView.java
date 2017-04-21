@@ -20,9 +20,9 @@ public class ItemSettingCenterView extends LinearLayout {
 	private CheckBox cb_select;
 	private String title;
 	private String content;
-	private boolean isSelected = false;
 	private RelativeLayout rl_root;
 	private String[] contentValues;
+	private boolean isSelected = false;
 
 
 	public ItemSettingCenterView(Context context, AttributeSet attrs,
@@ -51,6 +51,30 @@ public class ItemSettingCenterView extends LinearLayout {
 	}
 
 
+	/**
+	 * @param listener
+	 * 设置点击事件的监听器
+	 */
+	public void setOnItemClickListener(OnClickListener listener) {
+		rl_root.setOnClickListener(listener);
+	}
+	
+	/**
+	 * @param checked
+	 * 设置点击的激活状态
+	 */
+	public void setChecked(boolean checked) {
+		cb_select.setChecked(checked);
+	}
+	
+	/**
+	 * @return
+	 * 获取是否点击的状态
+	 */
+	public boolean isChecked() {
+		return cb_select.isChecked();
+	}
+	
 	private void initEvent() {
 		rl_root.setOnClickListener(new OnClickListener() {
 			
@@ -82,14 +106,9 @@ public class ItemSettingCenterView extends LinearLayout {
 		
 		tv_title.setText(title);
 		contentValues = content.split("-");
-		if(isSelected) {
-			tv_content.setText(contentValues[1]);
-			tv_content.setTextColor(Color.GREEN);
-			cb_select.setChecked(true);
-		} else {
+		if(!cb_select.isChecked()) {
 			tv_content.setText(contentValues[0]);
 			tv_content.setTextColor(Color.RED);
-			cb_select.setChecked(false);
 		}
 	}
 

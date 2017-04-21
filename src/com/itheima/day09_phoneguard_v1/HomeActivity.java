@@ -61,6 +61,11 @@ public class HomeActivity extends Activity {
 					}
 					break;
 
+				case 1://Õ®—∂Œ¿ ø
+					Intent teleSmsIntent = new Intent(HomeActivity.this, TeleSmsActivity.class);
+					startActivity(teleSmsIntent);
+					break;
+					
 				case 8:
 					Intent settingIntent = new Intent(HomeActivity.this, SettingCenterActivity.class);
 					startActivity(settingIntent);

@@ -25,6 +25,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
@@ -35,6 +36,8 @@ import android.widget.Toast;
 
 import com.itheima.day09_phoneguard_v1.domain.UrlBean;
 import com.itheima.day09_phoneguard_v1.utils.JsonParser2UrlBeanUtils;
+import com.itheima.day09_phoneguard_v1.utils.MyConstants;
+import com.itheima.day09_phoneguard_v1.utils.SharedPreferencesUtils;
 import com.itheima.day09_phoneguard_v1.utils.StreamUtil;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
@@ -62,12 +65,23 @@ public class SplashActivity extends Activity {
 		initView();
 		initData();
 		animation();
-		// startTimeMillis = System.currentTimeMillis();
-		startTimeMillis = SystemClock.currentThreadTimeMillis();
-		connection();
 
+		//耗时的操作防盗timeConsuming里,例如资源的获取,在动画播放开始时就使用了该方法
+		//方法如下
 	}
 
+	/**
+	 * 耗时的操作放在里面
+	 */
+	private void timeConsuming() {
+		
+		if(SharedPreferencesUtils.getBoolean(SplashActivity.this, MyConstants.AUTO_UPDATE, false)) {
+			// startTimeMillis = System.currentTimeMillis();
+			startTimeMillis = SystemClock.currentThreadTimeMillis();
+			connection();
+		}
+	}
+	
 	private void initData() {
 		try {
 			PackageManager packageManager = getPackageManager();
@@ -331,6 +345,29 @@ public class SplashActivity extends Activity {
 		as.addAnimation(aa);
 		as.addAnimation(ra);
 		as.addAnimation(sa);
+		
+		as.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+
+				timeConsuming();
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				if(!SharedPreferencesUtils.getBoolean(SplashActivity.this,
+						MyConstants.AUTO_UPDATE, false)){
+					mHandler.obtainMessage(VERSON_OK).sendToTarget();
+				}
+			}
+		});
 
 		rl_root.setAnimation(as);
 	}

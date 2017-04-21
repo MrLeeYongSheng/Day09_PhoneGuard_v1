@@ -8,4 +8,5 @@ public interface MyConstants {
 	String SP_ISSETUP = "issetup";
 	String SIM_SERIALNUMBER = "simSerialNumber";
 	String SAFE_NUMBER = "safeNumber";
+	String AUTO_UPDATE = "autoUpdate";
 }

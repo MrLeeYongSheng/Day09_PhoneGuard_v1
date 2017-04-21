@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        
+		<TextView 
+		    style="@style/TextTitle"
+		    android:text="通讯卫士"/>
+		<Button 
+		    android:id="@+id/btn_telesms_add"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="添加"
+		    android:layout_alignParentRight="true"
+		    android:layout_centerVertical="true"
+		    android:layout_marginRight="5dp"/>
+    </RelativeLayout>
+    
+    <FrameLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        
+	    <ListView
+	        android:id="@+id/lv_telesms_blacklist" 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:visibility="gone">
+	    </ListView>
+	    
+	    <TextView 
+	        android:id="@+id/tv_telesms_nodata"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="没有数据"
+	        android:layout_gravity="center"
+	        android:textSize="24sp"
+	        android:visibility="gone"/>
+	    
+	    <ProgressBar 
+	        android:id="@+id/pb_telesms_loading"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:visibility="gone"/>
+    </FrameLayout>
+    
+    
+</LinearLayout>
