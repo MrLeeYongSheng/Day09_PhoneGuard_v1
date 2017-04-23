@@ -11,6 +11,53 @@ import android.database.Cursor;
 import android.net.Uri;
 
 public class ReadContactsEngine {
+	
+	
+	/**
+	 * @param context
+	 * 	上下文
+	 * @return
+	 * 	封装了电话号码的通短信记录
+	 */
+	public static List<ContactBean> getSmsLogs(Context context){
+		List<ContactBean> smsLogs = new ArrayList<ContactBean>();
+		ContentResolver resolver = context.getContentResolver();
+		Uri uri = Uri.parse("content://sms");
+		Cursor cursor = resolver.query(uri , new String[]{"address"}, null, null, "_id desc");
+		while(cursor.moveToNext()) {
+			ContactBean bean = new ContactBean();
+			bean.setName("");
+			bean.setPhone(cursor.getString(cursor.getColumnIndex("address")));
+			smsLogs.add(bean);
+		}
+		cursor.close();
+		return smsLogs;
+	}
+	
+	/**
+	 * @param context
+	 * 	上下文
+	 * @return
+	 * 	封装了姓名和电话号码的通话记录
+	 */
+	public static List<ContactBean> getCallLogs(Context context){
+		List<ContactBean> callLogs = new ArrayList<ContactBean>();
+		ContentResolver resolver = context.getContentResolver();
+		Uri uri = Uri.parse("content://call_log/calls");
+		Cursor cursor = resolver.query(uri , new String[]{"name","number"}, null, null, "_id desc");
+		while(cursor.moveToNext()) {
+			ContactBean bean = new ContactBean();
+			String name = cursor.getString(cursor.getColumnIndex("name"));
+			if(name == null) {
+				name = "";
+			}
+			bean.setName(name);
+			bean.setPhone(cursor.getString(cursor.getColumnIndex("number")));
+			callLogs.add(bean);
+		}
+		cursor.close();
+		return callLogs;
+	}
 
 	/**
 	 * 读取联系人

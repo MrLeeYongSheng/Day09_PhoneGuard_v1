@@ -120,19 +120,26 @@ public class TeleSmsActivity extends Activity {
 						dismissPW();
 						break;
 					case R.id.tv_item_blacklist_add_contacts:
-						System.out.println("获取联系人");
+					{
 						Intent intent = new Intent(TeleSmsActivity.this, ContactsActivity.class);
 						startActivityForResult(intent, 1);
 						dismissPW();
 						break;
+					}
 					case R.id.tv_item_blacklist_add_phonelog:
-						System.out.println("通话记录");
+					{
+						Intent intent = new Intent(TeleSmsActivity.this, CallLogActivity.class);
+						startActivityForResult(intent, 1);
 						dismissPW();
 						break;
+					}
 					case R.id.tv_item_blacklist_add_smslog:
-						System.out.println("短信记录");
+					{
+						Intent intent = new Intent(TeleSmsActivity.this, SmsLogActivity.class);
+						startActivityForResult(intent, 1);
 						dismissPW();
 						break;
+					}
 
 					default:
 						break;
