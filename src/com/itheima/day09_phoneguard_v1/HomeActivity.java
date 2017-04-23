@@ -62,7 +62,8 @@ public class HomeActivity extends Activity {
 					break;
 
 				case 1://通讯卫士
-					Intent teleSmsIntent = new Intent(HomeActivity.this, TeleSmsActivity.class);
+					Intent teleSmsIntent = new Intent(HomeActivity.this, TeleSmsActivity.class);//跳转到非分页
+					//Intent teleSmsIntent = new Intent(HomeActivity.this, TeleSmsPagesActivity.class);//跳转到分页
 					startActivity(teleSmsIntent);
 					break;
 					

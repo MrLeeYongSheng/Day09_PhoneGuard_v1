@@ -53,7 +53,9 @@
         <activity android:name="com.itheima.day09_phoneguard_v1.ContactsActivity" >
         </activity>
         <activity android:name="com.itheima.day09_phoneguard_v1.SettingCenterActivity"></activity>
-
+        <activity android:name="com.itheima.day09_phoneguard_v1.TeleSmsActivity"></activity>
+		<activity android:name="com.itheima.day09_phoneguard_v1.TeleSmsPagesActivity"></activity>
+        
         <service android:name=".service.LostFindService" >
         </service>
         <service android:name="com.itheima.day09_phoneguard_v1.service.LocationService" >

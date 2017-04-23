@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:clickable="true"
+        android:background="@drawable/selector_home_gd_safe_dialog"
+        android:id="@+id/tv_item_blacklist_add_handwrite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@android:drawable/btn_star_big_on"
+        android:gravity="center_vertical"
+        android:text="手动添加"
+        android:textColor="#000000" />
+    
+    <TextView
+        android:clickable="true"
+        android:background="@drawable/selector_home_gd_safe_dialog"
+        android:id="@+id/tv_item_blacklist_add_contacts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@android:drawable/btn_star_big_on"
+        android:gravity="center_vertical"
+        android:text="导联系人"
+        android:textColor="#000000" />
+    
+    <TextView
+        android:clickable="true"
+        android:background="@drawable/selector_home_gd_safe_dialog"
+        android:id="@+id/tv_item_blacklist_add_phonelog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@android:drawable/btn_star_big_on"
+        android:gravity="center_vertical"
+        android:text="通话记录"
+        android:textColor="#000000" />
+    
+    <TextView
+        android:clickable="true"
+        android:background="@drawable/selector_home_gd_safe_dialog"
+        android:id="@+id/tv_item_blacklist_add_smslog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@android:drawable/btn_star_big_on"
+        android:gravity="center_vertical"
+        android:text="短信记录"
+        android:textColor="#000000" />
+    
+
+</LinearLayout>

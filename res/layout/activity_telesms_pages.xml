@@ -23,7 +23,8 @@
     
     <FrameLayout 
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:layout_weight="1">
         
 	    <ListView
 	        android:id="@+id/lv_telesms_blacklist" 
@@ -50,5 +51,41 @@
 	        android:visibility="gone"/>
     </FrameLayout>
     
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button 
+            android:onClick="preview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="p"/>
+        <Button 
+            android:onClick="next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="n"/>
+        <Button 
+            android:onClick="jump"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="j"/>
+        <EditText 
+            android:id="@+id/et_telesms_pages_j2p"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:text="1"/>
+        <TextView 
+            android:id="@+id/tv_telesms_pages_currentpage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="2/10"/>
+    </LinearLayout>
     
 </LinearLayout>
