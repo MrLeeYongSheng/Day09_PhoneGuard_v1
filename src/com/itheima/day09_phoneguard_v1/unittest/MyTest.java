@@ -7,11 +7,21 @@ import com.itheima.day09_phoneguard_v1.dao.BlacklistDao;
 import com.itheima.day09_phoneguard_v1.db.BlacklistTable;
 import com.itheima.day09_phoneguard_v1.domain.BlackBean;
 import com.itheima.day09_phoneguard_v1.domain.ContactBean;
+import com.itheima.day09_phoneguard_v1.engine.PhoneLocationEngine;
 import com.itheima.day09_phoneguard_v1.engine.ReadContactsEngine;
 
 import android.test.AndroidTestCase;
 
 public class MyTest extends AndroidTestCase {
+	
+	public void testPhoneLocation() {
+		System.out.println(PhoneLocationEngine.queryLocationByPhone("13202613645", getContext()));
+		System.out.println(PhoneLocationEngine.queryLocationByPhone("13538235385", getContext()));
+		System.out.println(PhoneLocationEngine.queryLocationByPhone("07588541027", getContext()));
+		System.out.println(PhoneLocationEngine.queryLocationByPhone("0108541079", getContext()));
+		System.out.println(PhoneLocationEngine.queryLocationByPhone("110", getContext()));
+		System.out.println(PhoneLocationEngine.queryLocationByPhone("0208541079", getContext()));
+	}
 	
 	public void testTotalRowsAndPages() {
 		BlacklistDao dao = new BlacklistDao(getContext());

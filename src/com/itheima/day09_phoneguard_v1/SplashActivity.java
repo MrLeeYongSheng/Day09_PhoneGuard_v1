@@ -1,6 +1,7 @@
 package com.itheima.day09_phoneguard_v1;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -16,6 +17,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -80,8 +82,59 @@ public class SplashActivity extends Activity {
 			startTimeMillis = SystemClock.currentThreadTimeMillis();
 			connection();
 		}
+		File file = new File(getFilesDir(), "address.db");
+//		File file = new File("/data/data/"+getPackageName()+"/files", "address.db");
+		if(!file.exists()) {
+			//把assert文件夹里的归属地数据库拷贝到本地
+			downPhoneLocationDB();
+		}
 	}
 	
+	/**
+	 * 把assert文件夹里的归属地数据库拷贝到本地
+	 */
+	private void downPhoneLocationDB() {
+
+		new Thread(){
+			public void run() {
+				AssetManager assets = getAssets();
+				InputStream is = null;
+				FileOutputStream fos = null;
+				try {
+					is = assets.open("address.db");
+					fos = openFileOutput("address.db", MODE_PRIVATE);
+					byte[] buf = new byte[10240];
+					int len = 0;
+					int i = 1;
+					while((len=is.read(buf)) > 0) {
+						i++;
+						fos.write(buf, 0, len);
+						if(i%10 == 0) {
+							fos.flush();
+						}
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					if(is!=null) {
+						try {
+							is.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					if(fos!=null) {
+						try {
+							fos.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			};
+		}.start();
+	}
+
 	private void initData() {
 		try {
 			PackageManager packageManager = getPackageManager();

@@ -52,7 +52,7 @@ public class HomeActivity extends Activity {
 					int position, long id) {
 
 				switch (position) {
-				case 0:
+				case 0://手机防盗
 					if(TextUtils.isEmpty(SharedPreferencesUtils.getString(HomeActivity.this, 
 							MyConstants.SP_SAFE_PASSWORD_NAME, MyConstants.SP_SAFE_PASSWORD_KEY, ""))) {
 						showSetPasswordDialog();
@@ -67,7 +67,12 @@ public class HomeActivity extends Activity {
 					startActivity(teleSmsIntent);
 					break;
 					
-				case 8:
+				case 7://高级工具
+					Intent atoolIntent = new Intent(HomeActivity.this, AtoolActivity.class);
+					startActivity(atoolIntent);
+					break;
+					
+				case 8://设置中心
 					Intent settingIntent = new Intent(HomeActivity.this, SettingCenterActivity.class);
 					startActivity(settingIntent);
 					break;

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView 
+        style="@style/TextTitle"
+        android:text="高级工具"/>
+    
+    <TextView
+        android:clickable="true"
+        android:background="@drawable/selector_home_gd_safe_dialog"
+        android:id="@+id/tv_atool_phonelocation"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@android:drawable/btn_star_big_on"
+        android:gravity="center_vertical"
+        android:text="手机归属地查询"
+        android:textColor="#000000" />
+    
+    <TextView
+        android:clickable="true"
+        android:background="@drawable/selector_home_gd_safe_dialog"
+        android:id="@+id/tv_atool_sms_backup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@android:drawable/btn_star_big_on"
+        android:gravity="center_vertical"
+        android:text="短信备份"
+        android:textColor="#000000" />
+    
+    <TextView
+        android:clickable="true"
+        android:background="@drawable/selector_home_gd_safe_dialog"
+        android:id="@+id/tv_atool_sms_getbackup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@android:drawable/btn_star_big_on"
+        android:gravity="center_vertical"
+        android:text="短信还原"
+        android:textColor="#000000" />
+    
+    <TextView
+        android:clickable="true"
+        android:background="@drawable/selector_home_gd_safe_dialog"
+        android:id="@+id/tv_atool_applock"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@android:drawable/btn_star_big_on"
+        android:gravity="center_vertical"
+        android:text="程序锁"
+        android:textColor="#000000" />
+    
+
+</LinearLayout>

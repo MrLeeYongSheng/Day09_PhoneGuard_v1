@@ -12,6 +12,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.ContentObserver;
+import android.net.Uri;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.telephony.PhoneStateListener;
@@ -42,7 +45,8 @@ public class TelSmsBlackService extends Service {
 	}
 	
 	private PhoneStateListener mListener = new PhoneStateListener() {
-		public void onCallStateChanged(int state, String incomingNumber) {
+		public void onCallStateChanged(int state,String incomingNumber) {
+			final String phone = incomingNumber;
 			if(state == TelephonyManager.CALL_STATE_RINGING) {
 				BlacklistDao dao = new BlacklistDao(TelSmsBlackService.this);
 				int mode = dao.getMode(incomingNumber);
@@ -52,6 +56,22 @@ public class TelSmsBlackService extends Service {
 						Method method = clazz.getMethod("getService", String.class);
 						IBinder iBinder = (IBinder) method.invoke(null, Context.TELEPHONY_SERVICE);
 						ITelephony iTelephony = ITelephony.Stub.asInterface(iBinder);
+						//注册内容观察者观察电话日志的生成
+						getContentResolver().registerContentObserver(Uri.parse("content://call_log/calls"),
+								true, new ContentObserver(new Handler()) {
+							@Override
+							public void onChange(boolean selfChange) {
+								deleteCallLog(phone);
+								super.onChange(selfChange);
+							}
+
+							private void deleteCallLog(String phone) {
+
+								getContentResolver().delete(Uri.parse("content://call_log/calls"),
+										"number=?", new String[]{phone});
+								getContentResolver().unregisterContentObserver(this);
+							}
+						});
 						iTelephony.endCall();
 					} catch (ClassNotFoundException e) {
 						e.printStackTrace();
