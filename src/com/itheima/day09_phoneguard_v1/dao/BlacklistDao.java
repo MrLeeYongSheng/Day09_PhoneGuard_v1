@@ -157,4 +157,21 @@ public class BlacklistDao {
 		db.insert(BlacklistTable.TABLENAME, null, values);
 		db.close();
 	}
+
+	/**
+	 * @param phone
+	 * 	电话号码
+	 * @return
+	 * 	拦截模式:0没有,1拦截短信,2拦截电话,3拦截短信和电话
+	 */
+	public int getMode(String phone) {
+		int mode = 0;
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		Cursor cursor = db.query(BlacklistTable.TABLENAME, new String[]{BlacklistTable.MODE},
+				BlacklistTable.PHONE+"=?", new String[]{phone}, null, null, null);
+		if(cursor.moveToNext()) {
+			mode = cursor.getInt(cursor.getColumnIndex(BlacklistTable.MODE));
+		}
+		return mode;
+	}
 }
