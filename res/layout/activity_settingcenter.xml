@@ -33,6 +33,7 @@
     </com.itheima.day09_phoneguard_v1.view.ItemSettingCenterView>
 
     <com.itheima.day09_phoneguard_v1.view.ItemSettingCenterView
+        android:id="@+id/iscv_settingcenter_comingphone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         itheima:content="来电显示显示已经关闭-来电显示显示已经开启"
@@ -46,11 +47,44 @@
         itheima:title="看门狗服务设置" >
     </com.itheima.day09_phoneguard_v1.view.ItemSettingCenterView>
 
-    <com.itheima.day09_phoneguard_v1.view.ItemSettingCenterView
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rl_settingcenter_phonelocation_style"
+    android:clickable="true"
+    android:background="@drawable/selector_home_gd_safe_dialog" >
+    
+    <TextView 
+        android:id="@+id/tv_settingcenter_phonelocation_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        itheima:content="归属地显示风格已经关闭-归属地显示风格已经开启"
-        itheima:title="归属地显示风格设置" >
-    </com.itheima.day09_phoneguard_v1.view.ItemSettingCenterView>
+        android:textSize="20sp"
+        android:text="来电显示样式"/>
+    <TextView 
+        android:id="@+id/tv_settingcenter_phonelocation_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_below="@id/tv_settingcenter_phonelocation_title"
+        android:textColor="#0000ff"
+        android:text="蔚空蓝"/>
+    <ImageView
+         android:id="@+id/iv_settingcenter_phonelocation_jiantou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:src="@drawable/selector_btn_jiantou"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
+    <View 
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+		android:layout_marginTop="5dp"
+		android:layout_marginBottom="5dp"
+        android:background="#44000000"
+        android:layout_below="@id/tv_settingcenter_phonelocation_content"/>
+
+</RelativeLayout>
 
 </LinearLayout>

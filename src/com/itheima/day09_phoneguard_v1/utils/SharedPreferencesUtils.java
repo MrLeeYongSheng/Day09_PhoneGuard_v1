@@ -34,4 +34,14 @@ public class SharedPreferencesUtils {
 		SharedPreferences sharedPreferences = context.getSharedPreferences(MyConstants.SP_CONFIG, Context.MODE_PRIVATE);
 		sharedPreferences.edit().putBoolean(key, value).commit();
 	}
+	
+	public static int getInt(Context context, String key, int defaultValue) {
+		SharedPreferences sharedPreferences = context.getSharedPreferences(MyConstants.SP_CONFIG, Context.MODE_PRIVATE);
+		return sharedPreferences.getInt(key, defaultValue);
+	}
+	
+	public static void putInt(Context context, String key, int value) {
+		SharedPreferences sharedPreferences = context.getSharedPreferences(MyConstants.SP_CONFIG, Context.MODE_PRIVATE);
+		sharedPreferences.edit().putInt(key, value).commit();
+	}	
 }

@@ -9,4 +9,7 @@ public interface MyConstants {
 	String SIM_SERIALNUMBER = "simSerialNumber";
 	String SAFE_NUMBER = "safeNumber";
 	String AUTO_UPDATE = "autoUpdate";
+	String PHONE_LOCATION_X = "phoneLocationX";
+	String PHONE_LOCATION_Y = "phoneLocationY";
+	String PHONE_LOCATION_STYLE = "phoneLocationStyle";
 }
