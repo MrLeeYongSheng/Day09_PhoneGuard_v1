@@ -70,6 +70,11 @@ public class HomeActivity extends Activity {
 				case 2://应用管家
 					Intent appmanIntent = new Intent(HomeActivity.this, AppManagerActivity.class);
 					startActivity(appmanIntent);
+					break;
+					
+				case 3://进程管家
+					Intent taskmanIntent = new Intent(HomeActivity.this, TaskManagerActivity.class);
+					startActivity(taskmanIntent);
 					break;	
 					
 				case 7://高级工具

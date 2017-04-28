@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        style="@style/TextTitle"
+        android:text="进程管家" />
+
+    <RelativeLayout
+        android:id="@+id/rl_taskman_taskTotalInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/tv_taskman_procCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="运行中的进程:12"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/tv_taskman_freeMem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="SD卡可用空间:123M"
+            android:textColor="#000000" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <ProgressBar
+            android:id="@+id/pb_taskman_loading"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <ListView
+            android:id="@+id/lv_taskman_procInfo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:fastScrollEnabled="true"
+            android:visibility="gone" >
+        </ListView>
+
+        <TextView
+            android:id="@+id/tv_taskman_procType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ff888888"
+            android:clickable="true"
+            android:text="用户进程(100)"
+            android:textColor="#ffffff"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_taskman_func_clear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector_home_gd_safe_dialog"
+            android:text="清理" />
+
+        <Button
+            android:id="@+id/btn_taskman_func_all"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector_home_gd_safe_dialog"
+            android:text="全选" />
+
+        <Button
+            android:id="@+id/btn_taskman_func_notall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector_home_gd_safe_dialog"
+            android:text="反选" />
+
+        <Button
+            android:id="@+id/btn_taskman_func_setting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector_home_gd_safe_dialog"
+            android:text="设置" />
+    </LinearLayout>
+
+</LinearLayout>

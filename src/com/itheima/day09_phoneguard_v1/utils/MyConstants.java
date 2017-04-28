@@ -12,4 +12,5 @@ public interface MyConstants {
 	String PHONE_LOCATION_X = "phoneLocationX";
 	String PHONE_LOCATION_Y = "phoneLocationY";
 	String PHONE_LOCATION_STYLE = "phoneLocationStyle";
+	String DISPLAY_SYS_PROC = "displaySysProc";
 }

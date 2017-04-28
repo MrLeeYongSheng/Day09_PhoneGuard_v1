@@ -7,13 +7,29 @@ import com.itheima.day09_phoneguard_v1.dao.BlacklistDao;
 import com.itheima.day09_phoneguard_v1.db.BlacklistTable;
 import com.itheima.day09_phoneguard_v1.domain.BlackBean;
 import com.itheima.day09_phoneguard_v1.domain.ContactBean;
+import com.itheima.day09_phoneguard_v1.domain.ProcessBean;
 import com.itheima.day09_phoneguard_v1.engine.PhoneLocationEngine;
+import com.itheima.day09_phoneguard_v1.engine.ProcessEngine;
 import com.itheima.day09_phoneguard_v1.engine.ReadContactsEngine;
 import com.itheima.day09_phoneguard_v1.engine.SmsEngine;
 
 import android.test.AndroidTestCase;
+import android.text.format.Formatter;
 
 public class MyTest extends AndroidTestCase {
+	
+	public void testMemory() {
+		/*long freeMemory = ProcessEngine.getFreeMemory(getContext());
+		System.out.println(Formatter.formatFileSize(getContext(), freeMemory));
+		long totalMemory = ProcessEngine.getTotalMemory();
+		System.out.println(Formatter.formatFileSize(getContext(), totalMemory));*/
+		List<ProcessBean> allProcInfo = ProcessEngine.getAllProcInfo(getContext());
+	/*	for (ProcessBean processBean : allProcInfo) {
+			System.out.println(processBean);
+		}*/
+		System.out.println(allProcInfo.size());
+		
+	}
 	
 	public void testPhoneLocation() {
 		System.out.println(PhoneLocationEngine.queryLocationByPhone("13202613645", getContext()));
