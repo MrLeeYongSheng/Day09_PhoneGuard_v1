@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <FrameLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <ListView 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lv_framgm_right_lock_data"
+            android:visibility="gone">
+            
+        </ListView>
+        <TextView 
+            android:id="@+id/tv_fragm_right_lock_softtype_tag"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="个人软件(100)"
+            android:visibility="gone"/>
+        <ProgressBar 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/pb_fragm_right_lock_loading"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+</LinearLayout>

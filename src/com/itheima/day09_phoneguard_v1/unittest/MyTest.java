@@ -4,6 +4,7 @@ package com.itheima.day09_phoneguard_v1.unittest;
 import java.util.List;
 
 import com.itheima.day09_phoneguard_v1.dao.BlacklistDao;
+import com.itheima.day09_phoneguard_v1.dao.LockedDao;
 import com.itheima.day09_phoneguard_v1.db.BlacklistTable;
 import com.itheima.day09_phoneguard_v1.domain.BlackBean;
 import com.itheima.day09_phoneguard_v1.domain.ContactBean;
@@ -17,6 +18,18 @@ import android.test.AndroidTestCase;
 import android.text.format.Formatter;
 
 public class MyTest extends AndroidTestCase {
+	
+	public void testLockedTable() {
+/*		LockedDao ldao = new LockedDao(getContext());
+		ldao.add("aa");
+		ldao.add("bb");
+		ldao.add("cc");
+		System.out.println(ldao.getAllDatas());
+		ldao.remove("bb");
+		System.out.println(ldao.getAllDatas());*/
+		LockedDao ldao = new LockedDao(getContext());
+		System.out.println(ldao.isLocked("aa"));
+	}
 	
 	public void testMemory() {
 		/*long freeMemory = ProcessEngine.getFreeMemory(getContext());

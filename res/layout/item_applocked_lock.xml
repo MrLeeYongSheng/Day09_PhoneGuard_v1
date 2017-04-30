@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:padding="5dp"
+    android:background="@drawable/selector_home_gd"
+    android:id="@+id/rl_item_applocked_locked_root" >
+    
+    <ImageView 
+        android:id="@+id/iv_item_applocked_locked_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/app"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"/>
+    
+    <TextView 
+        android:id="@+id/tv_item_applocked_locked_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="应用名字"
+        android:textSize="24sp"
+        android:layout_toRightOf="@id/iv_item_applocked_locked_icon"
+		android:layout_centerVertical="true"
+        android:textColor="#000000"/>
+
+    
+    <ImageView
+        android:id="@+id/iv_item_applocked_locked_lock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" 
+        android:src="@drawable/selector_applocked_locked"/>
+
+</RelativeLayout>

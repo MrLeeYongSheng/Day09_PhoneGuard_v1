@@ -126,6 +126,10 @@
             </intent-filter>
         </activity>
         <activity android:name="com.itheima.day09_phoneguard_v1.HomeActivity" >
+            <intent-filter >
+                <action android:name="com.itheima.home"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
         <activity android:name="com.itheima.day09_phoneguard_v1.LostFindActivity" >
         </activity>
@@ -157,7 +161,8 @@
         </activity>
         <activity android:name="com.itheima.day09_phoneguard_v1.TaskManagerActivity"></activity>
 		<activity android:name="com.itheima.day09_phoneguard_v1.TaskManagerSettingActivity"></activity>	
-        
+        <activity android:name="com.itheima.day09_phoneguard_v1.AppLockActivity"></activity>
+		
         <service android:name=".service.LostFindService" >
         </service>
         <service android:name="com.itheima.day09_phoneguard_v1.service.LocationService" >
@@ -167,7 +172,8 @@
         <service android:name="com.itheima.day09_phoneguard_v1.service.ComingPhoneService" >
         </service>
         <service android:name="com.itheima.day09_phoneguard_v1.service.LockScreenService"></service>
-
+		<service android:name="com.itheima.day09_phoneguard_v1.service.AppWidgetService"></service>
+        
         <receiver android:name="com.itheima.day09_phoneguard_v1.receiver.BootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -184,6 +190,20 @@
 
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+                <receiver android:name="com.itheima.day09_phoneguard_v1.receiver.ExampleAppWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/example_appwidget_info" />
+        </receiver>
+        <receiver android:name="com.itheima.day09_phoneguard_v1.receiver.AppWidgetReceiver">
+            <intent-filter >
+                <action android:name="com.itheima.appwidget.clear"/>
             </intent-filter>
         </receiver>
     </application>

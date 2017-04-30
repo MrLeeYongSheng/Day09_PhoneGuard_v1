@@ -1,5 +1,7 @@
 package com.itheima.day09_phoneguard_v1.service;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -57,6 +59,17 @@ public class ComingPhoneService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		
+		Notification.Builder builder = new  Notification.Builder(ComingPhoneService.this);
+		Intent mIntent = new Intent();
+		mIntent.setAction("com.itheima.home");
+		PendingIntent intent = PendingIntent.getActivity(ComingPhoneService.this, 1, mIntent , 0);
+		builder.setSmallIcon(R.drawable.ic_launcher)
+		.setContentText("我的手机卫士非常厉害")
+		.addAction(R.drawable.ic_launcher, "手机卫士", intent );
+		startForeground(1, builder.build());
+		
+		
 		mWM = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 		initToastParams();
 		tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);

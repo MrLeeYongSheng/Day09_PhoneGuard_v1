@@ -94,6 +94,13 @@ public class AtoolActivity extends Activity {
 				});
 				break;
 				
+			case R.id.tv_atool_applock:
+			{
+				Intent intent = new Intent(AtoolActivity.this, AppLockActivity.class);
+				startActivity(intent);
+			}
+				break;
+				
 			default:
 				break;
 			}
@@ -105,6 +112,7 @@ public class AtoolActivity extends Activity {
 		tv_phonelocation.setOnClickListener(mListener);
 		tv_sms_backup.setOnClickListener(mListener);
 		tv_sms_getbackup.setOnClickListener(mListener);
+		tv_applock.setOnClickListener(mListener);
 	}
 
 	private void initView() {

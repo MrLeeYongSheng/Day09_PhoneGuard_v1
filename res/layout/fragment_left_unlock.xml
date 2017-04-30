@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tv_fragm_left_unlock_totalcount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#88888888"
+        android:text="不加锁软件(100)"
+        android:textColor="#000000" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <ListView
+            android:id="@+id/lv_framgm_left_unlock_data"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
+        </ListView>
+
+        <TextView
+            android:id="@+id/tv_fragm_left_unlock_softtype_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ff888888"
+            android:text="个人软件(100)"
+            android:textColor="#ffffff"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/pb_fragm_left_unlock_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+    </FrameLayout>
+
+</LinearLayout>
