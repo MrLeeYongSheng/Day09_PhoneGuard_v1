@@ -162,6 +162,8 @@
         <activity android:name="com.itheima.day09_phoneguard_v1.TaskManagerActivity"></activity>
 		<activity android:name="com.itheima.day09_phoneguard_v1.TaskManagerSettingActivity"></activity>	
         <activity android:name="com.itheima.day09_phoneguard_v1.AppLockActivity"></activity>
+		<activity android:launchMode="singleInstance" android:name="com.itheima.day09_phoneguard_v1.WatchdogActivity"></activity>
+        <activity android:name="com.itheima.day09_phoneguard_v1.AntivirusActivity"></activity>
 		
         <service android:name=".service.LostFindService" >
         </service>
@@ -173,7 +175,8 @@
         </service>
         <service android:name="com.itheima.day09_phoneguard_v1.service.LockScreenService"></service>
 		<service android:name="com.itheima.day09_phoneguard_v1.service.AppWidgetService"></service>
-        
+        <service android:name="com.itheima.day09_phoneguard_v1.service.WatchdogService"></service>
+		
         <receiver android:name="com.itheima.day09_phoneguard_v1.receiver.BootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

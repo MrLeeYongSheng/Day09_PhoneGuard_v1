@@ -41,6 +41,7 @@
     </com.itheima.day09_phoneguard_v1.view.ItemSettingCenterView>
 
     <com.itheima.day09_phoneguard_v1.view.ItemSettingCenterView
+        android:id="@+id/iscv_settingcenter_watchdog"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         itheima:content="看门狗服务已经关闭-看门狗服务已经开启"

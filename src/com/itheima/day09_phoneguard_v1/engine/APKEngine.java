@@ -40,6 +40,7 @@ public class APKEngine {
 			}
 			//设置应用大小
 			String sourceDir = packageInfo.applicationInfo.sourceDir;
+			apkInfo.setApkPath(sourceDir);
 			File file = new File(sourceDir);
 			apkInfo.setSize(file.length());
 			lists.add(apkInfo);

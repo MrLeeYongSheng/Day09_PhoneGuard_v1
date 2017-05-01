@@ -3,12 +3,15 @@ package com.itheima.day09_phoneguard_v1.unittest;
 
 import java.util.List;
 
+import com.itheima.day09_phoneguard_v1.AntivirusActivity;
+import com.itheima.day09_phoneguard_v1.dao.AntivirusDao;
 import com.itheima.day09_phoneguard_v1.dao.BlacklistDao;
 import com.itheima.day09_phoneguard_v1.dao.LockedDao;
 import com.itheima.day09_phoneguard_v1.db.BlacklistTable;
 import com.itheima.day09_phoneguard_v1.domain.BlackBean;
 import com.itheima.day09_phoneguard_v1.domain.ContactBean;
 import com.itheima.day09_phoneguard_v1.domain.ProcessBean;
+import com.itheima.day09_phoneguard_v1.engine.APKEngine;
 import com.itheima.day09_phoneguard_v1.engine.PhoneLocationEngine;
 import com.itheima.day09_phoneguard_v1.engine.ProcessEngine;
 import com.itheima.day09_phoneguard_v1.engine.ReadContactsEngine;
@@ -18,6 +21,10 @@ import android.test.AndroidTestCase;
 import android.text.format.Formatter;
 
 public class MyTest extends AndroidTestCase {
+	
+	public void testOpenDB() {
+		System.out.println(APKEngine.getAllAPKInfo(getContext()));
+	}
 	
 	public void testLockedTable() {
 /*		LockedDao ldao = new LockedDao(getContext());

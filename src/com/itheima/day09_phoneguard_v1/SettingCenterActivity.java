@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.itheima.day09_phoneguard_v1.service.ComingPhoneService;
 import com.itheima.day09_phoneguard_v1.service.TelSmsBlackService;
+import com.itheima.day09_phoneguard_v1.service.WatchdogService;
 import com.itheima.day09_phoneguard_v1.utils.MyConstants;
 import com.itheima.day09_phoneguard_v1.utils.ServiceUtil;
 import com.itheima.day09_phoneguard_v1.utils.SharedPreferencesUtils;
@@ -22,6 +23,7 @@ public class SettingCenterActivity extends Activity {
 	private ItemSettingCenterView iscv_autoUpdate;
 	private ItemSettingCenterView iscv_blacklist;
 	private ItemSettingCenterView iscv_comingphone;
+	private ItemSettingCenterView iscv_watchdog;
 	private RelativeLayout rl_style;
 	private String[] style = new String[] { "蔚空蓝", "金属灰", "苹果绿", "活力橙", "透明色" };
 	private TextView tv_content;
@@ -95,6 +97,31 @@ public class SettingCenterActivity extends Activity {
 				}
 			}
 		});
+		
+		iscv_watchdog.setOnItemClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				if (ServiceUtil
+						.isServiceRunning(SettingCenterActivity.this,
+								"com.itheima.day09_phoneguard_v1.service.WatchdogService")) {
+					// 拦截服务正在运行
+					// 停止服务
+					Intent intent = new Intent(SettingCenterActivity.this,
+							WatchdogService.class);
+					stopService(intent);
+					iscv_watchdog.setChecked(false);
+				} else {
+					// 拦截服务停止
+					// 开启服务
+					Intent intent = new Intent(SettingCenterActivity.this,
+							WatchdogService.class);
+					startService(intent);
+					iscv_watchdog.setChecked(true);
+				}
+			}
+		});
 
 		rl_style.setOnClickListener(new OnClickListener() {
 
@@ -126,6 +153,7 @@ public class SettingCenterActivity extends Activity {
 		iscv_autoUpdate = (ItemSettingCenterView) findViewById(R.id.iscv_settingcenter_autoupdate);
 		iscv_blacklist = (ItemSettingCenterView) findViewById(R.id.iscv_settingcenter_blacklist);
 		iscv_comingphone = (ItemSettingCenterView) findViewById(R.id.iscv_settingcenter_comingphone);
+		iscv_watchdog = (ItemSettingCenterView) findViewById(R.id.iscv_settingcenter_watchdog);
 		rl_style = (RelativeLayout) findViewById(R.id.rl_settingcenter_phonelocation_style);
 		tv_content = (TextView) findViewById(R.id.tv_settingcenter_phonelocation_content);
 	}
@@ -148,11 +176,20 @@ public class SettingCenterActivity extends Activity {
 
 		if (ServiceUtil.isServiceRunning(SettingCenterActivity.this,
 				"com.itheima.day09_phoneguard_v1.service.ComingPhoneService")) {
-			// 拦截服务正在运行
+			// 来电显示附属地服务正在运行
 			iscv_comingphone.setChecked(true);
 		} else {
-			// 拦截服务没有运行
+			//来电显示附属地服务没有运行
 			iscv_comingphone.setChecked(false);
+		}
+		
+		if (ServiceUtil.isServiceRunning(SettingCenterActivity.this,
+				"com.itheima.day09_phoneguard_v1.service.WatchdogService")) {
+			// 看门狗服务正在运行
+			iscv_watchdog.setChecked(true);
+		} else {
+			// 看门狗服务没有运行
+			iscv_watchdog.setChecked(false);
 		}
 		
 		tv_content.setText(style[SharedPreferencesUtils.getInt(SettingCenterActivity.this, MyConstants.PHONE_LOCATION_STYLE, 0)]);

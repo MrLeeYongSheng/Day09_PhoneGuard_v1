@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView 
+        style="@style/TextTitle"
+        android:text="看门狗"/>
+    
+    <ImageView 
+        android:id="@+id/iv_watchdog_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/app"/>
+    
+    <EditText 
+        android:id="@+id/et_watchdog_pass"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入密码"/>
+    <Button 
+        android:id="@+id/btn_watchdog_ok"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_home_gd_safe_dialog"
+        android:text="确认"/>
+
+</LinearLayout>

@@ -86,14 +86,21 @@ public class SplashActivity extends Activity {
 //		File file = new File("/data/data/"+getPackageName()+"/files", "address.db");
 		if(!file.exists()) {
 			//把assert文件夹里的归属地数据库拷贝到本地
-			downPhoneLocationDB();
+			downPhoneLocationDB("address.db");
+		}
+		
+		//antivirus.db
+		File file2 = new File(getFilesDir(), "antivirus.db");
+		if(!file2.exists()) {
+			//把assert文件夹里的病毒数据库拷贝到本地
+			downPhoneLocationDB("antivirus.db");
 		}
 	}
 	
 	/**
 	 * 把assert文件夹里的归属地数据库拷贝到本地
 	 */
-	private void downPhoneLocationDB() {
+	private void downPhoneLocationDB(final String file) {
 
 		new Thread(){
 			public void run() {
@@ -101,8 +108,8 @@ public class SplashActivity extends Activity {
 				InputStream is = null;
 				FileOutputStream fos = null;
 				try {
-					is = assets.open("address.db");
-					fos = openFileOutput("address.db", MODE_PRIVATE);
+					is = assets.open(file);
+					fos = openFileOutput(file, MODE_PRIVATE);
 					byte[] buf = new byte[10240];
 					int len = 0;
 					int i = 1;
